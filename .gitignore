@@ -8,3 +8,6 @@ CLAUDE.md
 
 # Optional local static-server helpers
 node_modules/
+
+# Bob agent kit: keep skills + rules in git, but never commit the monday.com API token
+.bob/mcp.json

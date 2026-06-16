@@ -1,0 +1,33 @@
+<!--
+  New-page template. Save as  <slug>.html  in the project root and replace every
+  __SLUG__ (lowercase id, no spaces) and __TITLE__ (the page heading).
+  Add one <script type="module"> per EXTRA Carbon component the page uses (see carbon-reference.md);
+  ui-shell, tag and tile are already here. All our own scripts are classic so the page opens from file://.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>__TITLE__ · Bob Builder Template</title>
+    <link rel="icon" href="data:," />
+
+    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/plex/sans.css" />
+    <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Carbon Web Components (CDN ES modules). Add one line per extra component this page needs. -->
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/ui-shell.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tag.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tile.min.js"></script>
+  </head>
+  <body>
+    <main id="main">
+      <bob-__SLUG__ class="view"></bob-__SLUG__>
+    </main>
+
+    <!-- Shared shell (header + rail), then (optional) data, then this page's component. -->
+    <script src="./shell.js"></script>
+    <!-- <script src="./data/__SLUG__.js"></script> -->
+    <script src="./components/__SLUG__.js"></script>
+  </body>
+</html>
