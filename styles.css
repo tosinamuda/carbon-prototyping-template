@@ -57,34 +57,18 @@ cds-header-menu-button {
   display: flex !important;
 }
 
-/* The side nav is a persistent RAIL. This Carbon build always sizes the inner panel to 16rem,
-   and that panel is `position: fixed` inside the component's shadow DOM — so the page can't
-   resize it directly. Instead we size + clip it from the host: `overflow: hidden` plus a
-   transform (which makes the host the containing block for the fixed inner panel) clips the
-   panel to the host's width. Full = 16rem; collapsed = a 3rem icon rail. */
-cds-side-nav {
-  position: fixed;
-  inset-block: 0;
-  inset-inline-start: 0;
-  inline-size: 16rem; /* full width */
-  overflow: hidden;
-  transform: translateZ(0);
-  z-index: 8000;
-  transition: inline-size 0.11s cubic-bezier(0.2, 0, 1, 0.9);
-}
+/* The side nav is Carbon's "rail": a 3rem icon rail that the component itself expands to 16rem
+   (showing labels) when it gets the `expanded` attribute — app.js toggles that on the hamburger.
+   Carbon positions it fixed, below the 3rem header, and the expansion OVERLAYS the content (the
+   page never reflows, since #main only ever clears the 3rem rail). */
 
-/* Collapsed → a 3rem icon rail (the Carbon "rail" look), not hidden. */
-body.nav-collapsed cds-side-nav {
-  inline-size: 3rem;
-}
-
-/* Content sits below the fixed 3rem header; on wide screens it clears the 16rem side nav.
+/* Content sits below the fixed 3rem header and always clears just the 3rem rail.
    The Carbon "Gray 10" theme layering: the page is $background (gray-10) and cards sit on
    $layer-01 (white). Setting these tokens makes cds-tile/cds-table render as white cards
    that read as one elevation above the gray-10 base — proper Carbon layering. */
 #main {
   margin-top: 3rem;
-  margin-inline-start: 3rem; /* clear the persistent icon rail (48px) */
+  margin-inline-start: 3rem; /* clear the 3rem rail; the expanded nav overlays */
   height: calc(100vh - 3rem); /* fill below the fixed header… */
   overflow-y: auto; /* …and scroll the content here, not the whole page */
   padding: 1.5rem; /* spacing-06 */
@@ -104,11 +88,14 @@ body.nav-collapsed cds-side-nav {
 
 @media (min-width: 66rem) {
   #main {
-    margin-inline-start: 16rem; /* full nav reserves its width */
     padding: 2rem; /* spacing-07 */
   }
-  body.nav-collapsed #main {
-    margin-inline-start: 3rem; /* collapsed → content clears just the rail */
+}
+
+/* Below Carbon's `lg` breakpoint the rail collapses to zero width; let the content reclaim it. */
+@media (max-width: 65.98rem) {
+  #main {
+    margin-inline-start: 0;
   }
 }
 

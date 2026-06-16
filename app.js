@@ -109,17 +109,20 @@ function wireNav() {
   })
 }
 
-// The hamburger toggles the side nav between full (16rem) and a 3rem icon rail. CSS sizes the
-// host (see styles.css); we only flip one body class here. We deliberately do NOT touch the
-// nav's `expanded` attribute or the button's `active` state: Carbon mirrors `expanded` onto the
-// button as an ✕, and the ask is for the control to stay a hamburger in both states. Labels are
-// revealed purely by the host widening — the link text is always rendered, just clipped at rail.
+// The side nav is Carbon's "rail": a 3rem icon rail that the component expands to a 16rem labelled
+// panel (overlaying the content) when it has the `expanded` attribute. The hamburger just toggles
+// that attribute. Carbon also mirrors `expanded` onto the menu button as an ✕, so a MutationObserver
+// strips `active` the moment it's added — the control stays a hamburger in both states.
 function wireMenuButton() {
   const button = document.querySelector('cds-header-menu-button')
-  if (!button) return
-  button.addEventListener('click', () => {
-    document.body.classList.toggle('nav-collapsed')
-  })
+  const sideNav = document.querySelector('cds-side-nav')
+  if (!button || !sideNav) return
+
+  new MutationObserver(() => {
+    if (button.hasAttribute('active')) button.removeAttribute('active')
+  }).observe(button, { attributes: true, attributeFilter: ['active'] })
+
+  button.addEventListener('click', () => sideNav.toggleAttribute('expanded'))
 }
 
 // In-browser WebGPU chat — drives chat-worker.js (transformers.js from esm.sh). The model
