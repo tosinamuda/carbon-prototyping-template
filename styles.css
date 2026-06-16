@@ -254,6 +254,24 @@ cds-table-cell cds-tag {
     grid-template-columns: 1fr;
   }
 }
+
+/* Home page call-to-action cards (clickable tiles). */
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 56rem;
+  margin-bottom: 2.5rem;
+}
+.home-cards cds-clickable-tile {
+  display: block;
+  block-size: 100%;
+}
+@media (max-width: 56rem) {
+  .home-cards {
+    grid-template-columns: 1fr;
+  }
+}
 .start-num {
   margin: 0 0 0.5rem;
   font-size: 0.75rem;

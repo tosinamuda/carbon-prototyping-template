@@ -2,11 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=dashboard.html" />
-    <title>Bob Builder Template</title>
-    <link rel="canonical" href="dashboard.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bob Builder Template — Carbon prototyping workshop</title>
+    <link rel="icon" href="data:," />
+
+    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/plex/sans.css" />
+    <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Carbon Web Components (CDN ES modules). -->
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/ui-shell.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tag.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tile.min.js"></script>
   </head>
   <body>
-    <p>Redirecting to <a href="dashboard.html">the dashboard</a>…</p>
+    <main id="main">
+      <bob-home class="view"></bob-home>
+    </main>
+
+    <script src="./shell.js"></script>
+    <script src="./components/home.js"></script>
   </body>
 </html>
