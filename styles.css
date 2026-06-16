@@ -52,14 +52,30 @@ cds-side-nav {
 }
 
 /* Carbon hides the header menu button above the lg breakpoint; show it on every screen so
-   the side nav can be collapsed on desktop too. (!important to beat the shadow :host rule.) */
+   the side nav can be toggled on desktop too. (!important to beat the shadow :host rule.) */
 cds-header-menu-button {
   display: flex !important;
 }
 
-/* Collapsed side nav: hide it so content can reclaim the full width. */
+/* The side nav is a persistent RAIL. This Carbon build always sizes the inner panel to 16rem,
+   and that panel is `position: fixed` inside the component's shadow DOM — so the page can't
+   resize it directly. Instead we size + clip it from the host: `overflow: hidden` plus a
+   transform (which makes the host the containing block for the fixed inner panel) clips the
+   panel to the host's width. Full = 16rem; collapsed = a 3rem icon rail. */
+cds-side-nav {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 16rem; /* full width */
+  overflow: hidden;
+  transform: translateZ(0);
+  z-index: 8000;
+  transition: inline-size 0.11s cubic-bezier(0.2, 0, 1, 0.9);
+}
+
+/* Collapsed → a 3rem icon rail (the Carbon "rail" look), not hidden. */
 body.nav-collapsed cds-side-nav {
-  display: none;
+  inline-size: 3rem;
 }
 
 /* Content sits below the fixed 3rem header; on wide screens it clears the 16rem side nav.
@@ -68,6 +84,7 @@ body.nav-collapsed cds-side-nav {
    that read as one elevation above the gray-10 base — proper Carbon layering. */
 #main {
   margin-top: 3rem;
+  margin-inline-start: 3rem; /* clear the persistent icon rail (48px) */
   height: calc(100vh - 3rem); /* fill below the fixed header… */
   overflow-y: auto; /* …and scroll the content here, not the whole page */
   padding: 1.5rem; /* spacing-06 */
@@ -87,11 +104,11 @@ body.nav-collapsed cds-side-nav {
 
 @media (min-width: 66rem) {
   #main {
-    margin-left: 16rem;
+    margin-inline-start: 16rem; /* full nav reserves its width */
     padding: 2rem; /* spacing-07 */
   }
   body.nav-collapsed #main {
-    margin-left: 0;
+    margin-inline-start: 3rem; /* collapsed → content clears just the rail */
   }
 }
 

@@ -42,14 +42,31 @@
       <cds-header-name href="#" prefix="IBM">Carbon · Web Components · No Backend</cds-header-name>
     </cds-header>
 
-    <cds-side-nav aria-label="Side navigation" collapse-mode="responsive" expanded>
+    <!-- Rail side nav: collapses to a 3rem icon rail (not hidden). Each link has a
+         `title-icon` so the rail stays meaningful when only icons show. -->
+    <cds-side-nav aria-label="Side navigation" collapse-mode="rail">
       <cds-side-nav-items>
-        <cds-side-nav-link data-view="dashboard" active href="#dashboard">Dashboard</cds-side-nav-link>
-        <cds-side-nav-link data-view="chat" href="#chat">Chat (WebGPU)</cds-side-nav-link>
-        <cds-side-nav-link data-view="data" href="#data">Notes data</cds-side-nav-link>
-        <cds-side-nav-link data-view="tutorial" href="#tutorial">Tutorial</cds-side-nav-link>
+        <cds-side-nav-link data-view="dashboard" active href="#dashboard">
+          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M7 2H3a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Zm0 4H3V3h4Zm6-4h-3a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1ZM7 9H3a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1Zm6-2h-3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1Z"/></svg>
+          Dashboard
+        </cds-side-nav-link>
+        <cds-side-nav-link data-view="chat" href="#chat">
+          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 3H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1v2.6L8.2 11H13a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1Zm0 7H7.8l-.27.2L5 12.1V10H3V4h10Z"/></svg>
+          Chat (WebGPU)
+        </cds-side-nav-link>
+        <cds-side-nav-link data-view="data" href="#data">
+          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1ZM6 13H3v-3h3Zm0-4H3V6h3Zm7 4H7v-3h6Zm0-4H7V6h6Zm0-4H3V3h10Z"/></svg>
+          Notes data
+        </cds-side-nav-link>
+        <cds-side-nav-link data-view="tutorial" href="#tutorial">
+          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12 2H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Zm0 11H4V3h8ZM5.5 5h5v1h-5Zm0 2.5h5v1h-5Zm0 2.5h3v1h-3Z"/></svg>
+          Tutorial
+        </cds-side-nav-link>
         <!-- No data-view → this one navigates to the standalone IBM.com-style page. -->
-        <cds-side-nav-link href="ibm-landing.html">IBM landing</cds-side-nav-link>
+        <cds-side-nav-link href="ibm-landing.html">
+          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 14H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h5v1H3v10h10V8h1v5c0 .6-.4 1-1 1Z"/><path d="M10 1v1h3.3L9 6.3l.7.7L14 2.7V6h1V1z"/></svg>
+          IBM landing
+        </cds-side-nav-link>
       </cds-side-nav-items>
     </cds-side-nav>
 

@@ -109,17 +109,16 @@ function wireNav() {
   })
 }
 
-// Hamburger ↔ side nav. The nav starts open, so the button starts "active" (showing an X).
+// The hamburger toggles the side nav between full (16rem) and a 3rem icon rail. CSS sizes the
+// host (see styles.css); we only flip one body class here. We deliberately do NOT touch the
+// nav's `expanded` attribute or the button's `active` state: Carbon mirrors `expanded` onto the
+// button as an ✕, and the ask is for the control to stay a hamburger in both states. Labels are
+// revealed purely by the host widening — the link text is always rendered, just clipped at rail.
 function wireMenuButton() {
   const button = document.querySelector('cds-header-menu-button')
-  const sideNav = document.querySelector('cds-side-nav')
-  if (!button || !sideNav) return
-
-  button.setAttribute('active', '')
+  if (!button) return
   button.addEventListener('click', () => {
-    const collapsed = document.body.classList.toggle('nav-collapsed')
-    button.toggleAttribute('active', !collapsed)
-    sideNav.toggleAttribute('expanded', !collapsed)
+    document.body.classList.toggle('nav-collapsed')
   })
 }
 
