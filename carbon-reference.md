@@ -135,9 +135,23 @@ new LineChart(element, { data, options }); // options: { theme: 'white', height:
 
 ### Icons
 
-Carbon icons are **SVG**, not a `<cds-*>` element. For this no-build project, paste the SVG
-markup inline (grab it from <https://carbondesignsystem.com/elements/icons/library/>), or use
-an `<svg>` with a 16/20/24/32 px viewBox. Don't `npm install @carbon/icons`.
+Carbon icons are **SVG**, not a `<cds-*>` element. For this no-build project, **paste the SVG
+markup inline** so it inherits color via `fill="currentColor"` (an `<img>` can't be themed).
+
+Grab the authentic SVG from the CDN — the **full** icon set lives under `svg/32/` (the `svg/16/`
+folder is only the ~60 icons Carbon's own components use, so most names 404 there):
+
+```
+https://cdn.jsdelivr.net/npm/@carbon/icons@11.82.0/svg/32/<name>.svg
+```
+
+e.g. `dashboard`, `chat`, `table`, `education`, `launch`, `document`, `settings`, `user--avatar`.
+Inline it as `<svg viewBox="0 0 32 32" fill="currentColor" width="16" height="16">…</svg>` (the
+32-grid scales down cleanly). Don't `npm install @carbon/icons`. The five side-nav icons in
+`index.html` were taken straight from there.
+
+> Inlining is fine for a handful of icons. If a page needs *many*, that markup bloats the HTML
+> (and the tokens an AI reads) — at that point reach for an SVG sprite + `<use href="…#id">`.
 
 ---
 
