@@ -1,0 +1,322 @@
+/* Minimal page chrome. The Carbon Web Components style themselves (Shadow DOM); this
+   only handles the UI-shell layout offsets, the page background, and typography for the
+   plain HTML around the components. Colours are Carbon tokens (gray-10/100, gray-60). */
+
+:root {
+  font-size: 100%; /* 16px base — defines 1rem, without a hard px value */
+}
+
+/* App-shell layout: the page itself doesn't scroll — only the content region does. This
+   keeps the fixed header and side nav filling the viewport at all times (so the dark side
+   nav always reaches full height instead of stopping where the page would scroll). */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  background: #f4f4f4; /* Carbon gray-10 */
+  color: #161616; /* Carbon gray-100 */
+}
+
+/* The `hidden` attribute must win over our `display: flex` rules (chat intro/composer). */
+[hidden] {
+  display: none !important;
+}
+
+/* The Carbon UI Shell header AND side nav are dark (g100), matching the React app. The
+   components read these token custom properties (which default to the light theme when
+   undefined), so set the g100 values on the hosts — they inherit into the shadow DOM. */
+cds-header,
+cds-side-nav {
+  --cds-background: #161616;
+  --cds-text-primary: #f4f4f4;
+  --cds-text-secondary: #c6c6c6;
+  --cds-icon-primary: #f4f4f4;
+  --cds-icon-secondary: #c6c6c6;
+  --cds-border-subtle: #393939;
+  --cds-background-hover: #2c2c2c;
+  --cds-layer-hover: #2c2c2c;
+}
+
+/* Side-nav active item: a lighter selected layer + the blue interactive accent, on dark. */
+cds-side-nav {
+  --cds-background-selected: #393939;
+  --cds-layer-selected: #393939;
+  --cds-border-interactive: #4589ff;
+  --cds-link-primary: #78a9ff;
+  --cds-text-secondary: #f4f4f4;
+}
+
+/* Carbon hides the header menu button above the lg breakpoint; show it on every screen so
+   the side nav can be collapsed on desktop too. (!important to beat the shadow :host rule.) */
+cds-header-menu-button {
+  display: flex !important;
+}
+
+/* Collapsed side nav: hide it so content can reclaim the full width. */
+body.nav-collapsed cds-side-nav {
+  display: none;
+}
+
+/* Content sits below the fixed 3rem header; on wide screens it clears the 16rem side nav.
+   The Carbon "Gray 10" theme layering: the page is $background (gray-10) and cards sit on
+   $layer-01 (white). Setting these tokens makes cds-tile/cds-table render as white cards
+   that read as one elevation above the gray-10 base — proper Carbon layering. */
+#main {
+  margin-top: 3rem;
+  height: calc(100vh - 3rem); /* fill below the fixed header… */
+  overflow-y: auto; /* …and scroll the content here, not the whole page */
+  padding: 1.5rem; /* spacing-06 */
+
+  --cds-background: #f4f4f4; /* gray-10 — the base */
+  --cds-layer: #ffffff; /* layer-01 — tiles + tables */
+  --cds-layer-01: #ffffff;
+  --cds-layer-02: #f4f4f4; /* layer-02 — anything nested inside a card */
+  --cds-layer-hover: #e8e8e8;
+  --cds-layer-hover-01: #e8e8e8;
+  --cds-layer-accent: #e0e0e0; /* gray-20 — data-table header */
+  --cds-layer-accent-01: #e0e0e0;
+  --cds-border-subtle: #e0e0e0;
+  --cds-border-subtle-00: #e0e0e0;
+  --cds-border-subtle-01: #c6c6c6;
+}
+
+@media (min-width: 66rem) {
+  #main {
+    margin-left: 16rem;
+    padding: 2rem; /* spacing-07 */
+  }
+  body.nav-collapsed #main {
+    margin-left: 0;
+  }
+}
+
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+h1 {
+  /* Carbon heading-05: 2rem / weight 400 / line-height 1.25 (Carbon headings are light). */
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.sub {
+  margin: 0.25rem 0 1.5rem;
+  color: #6f6f6f; /* Carbon gray-60 */
+}
+
+.sub code {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.875rem;
+}
+
+/* KPI summary row — 4 equal tiles, like a Carbon dashboard's header row. */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; /* spacing-05 */
+  margin-bottom: 1rem;
+}
+.kpi-label {
+  font-size: 0.875rem; /* body-01 */
+  color: #525252; /* gray-70 */
+}
+.kpi-value {
+  margin-top: 0.75rem;
+  font-size: 2.5rem; /* large + light, like Carbon KPI numerals */
+  font-weight: 300;
+  line-height: 1;
+  color: #161616;
+}
+
+/* Charts: full-width trend on top, then two balanced halves below. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem; /* spacing-05 */
+}
+.col-full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 66rem) {
+  .kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .col-full {
+    grid-column: 1 / -1;
+  }
+}
+
+cds-tile {
+  display: block;
+}
+
+/* Chart tiles get 24px padding (spacing-06) instead of the default 16px so the dense chart
+   grids — which run to the container edge — have clear breathing room from the tile. The KPI
+   tiles keep the default 16px. (!important overrides the component's :host padding.) */
+.grid cds-tile {
+  padding: 1.5rem !important;
+}
+
+/* Stack tags with a little breathing room inside table cells. */
+cds-table-cell cds-tag {
+  margin: 0.125rem 0.125rem 0.125rem 0;
+}
+
+/* ── In-browser chat ─────────────────────────────────────────────────────────── */
+#chat-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+#chat-intro p {
+  margin: 0;
+  color: #525252; /* gray-70 */
+}
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 13.75rem;
+  margin-top: 1rem;
+}
+.chat-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+.chat-msg.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+.chat-msg-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #6f6f6f; /* gray-60 */
+}
+.chat-bubble {
+  padding: 0.75rem 1rem;
+  white-space: pre-wrap;
+  background: #f4f4f4; /* gray-10 — one layer up from the white tile */
+}
+.chat-msg.user .chat-bubble {
+  background: #d0e2ff; /* blue-20 — a message tint, not the primary-button blue */
+  color: #161616;
+}
+.chat-composer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  margin-top: 1rem;
+}
+.chat-composer cds-text-input {
+  flex: 1;
+}
+
+/* ── Tutorial ────────────────────────────────────────────────────────────────── */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 56rem;
+}
+.step {
+  display: flex;
+  gap: 1.5rem;
+}
+.step-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  background: #161616; /* gray-100 */
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.step-body {
+  flex: 1;
+  min-width: 0;
+}
+.step-title {
+  margin: 0;
+  font-size: 1.25rem; /* heading-03 */
+  font-weight: 400;
+}
+.step-desc {
+  margin: 0.25rem 0 1rem;
+  color: #525252; /* gray-70 */
+}
+.step-desc code {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.875rem;
+}
+.prompt-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #6f6f6f; /* gray-60 */
+}
+.step-body cds-code-snippet {
+  display: block;
+}
+
+/* "Start here" cards above the build steps. */
+.tutorial-start {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 56rem;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 42rem) {
+  .tutorial-start {
+    grid-template-columns: 1fr;
+  }
+}
+.start-num {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #6929c4; /* purple-70 — matches the Tutorial tag */
+}
+.doc-link {
+  display: block;
+  width: fit-content;
+  margin-top: 0.75rem;
+  color: #0f62fe; /* blue-60 */
+  font-weight: 500;
+}
+.doc-link:hover {
+  color: #0043ce; /* blue-70 */
+}
+.steps-heading {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem; /* heading-03 */
+  font-weight: 400;
+}

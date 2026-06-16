@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Granite × Carbon — an IBM.com-style landing page</title>
+    <link rel="icon" href="data:," />
+
+    <!-- IBM Plex (Carbon's typeface) + one Carbon Web Component (the CTA buttons). -->
+    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/plex/sans.css" />
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/button.min.js"></script>
+
+    <style>
+      /* ── IBM.com-flavoured design language, hand-built with Carbon tokens ──────── */
+      :root {
+        --ink: #161616; /* gray-100 */
+        --ink-70: #525252; /* gray-70 */
+        --ink-60: #6f6f6f; /* gray-60 */
+        --line: #e0e0e0; /* gray-20 */
+        --line-30: #c6c6c6; /* gray-30 */
+        --layer: #f4f4f4; /* gray-10 */
+        --blue: #0f62fe; /* blue-60 */
+        --blue-70: #0043ce;
+        --grad: linear-gradient(102deg, #0f62fe 0%, #8a3ffc 52%, #ee5396 100%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        color: var(--ink);
+        background: #fff;
+        line-height: 1.4;
+      }
+      a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--blue-70);
+        text-decoration: underline;
+      }
+      .wrap {
+        max-width: 99rem; /* Carbon Max grid width */
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      @media (min-width: 66rem) {
+        .wrap {
+          padding: 0 2rem;
+        }
+      }
+
+      /* ── Masthead ─────────────────────────────────────────────────────────────── */
+      .masthead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #fff;
+        border-bottom: 0.0625rem solid var(--line);
+      }
+      /* Inner row uses .wrap so the logo/nav/actions line up with the page content. */
+      .masthead-inner {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        height: 3rem;
+      }
+      /* The 8-bar IBM wordmark, evoked with striped text (background-clip). */
+      .ibm-logo {
+        font-weight: 700;
+        font-size: 1.4rem;
+        letter-spacing: 0.0625rem;
+        line-height: 1;
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--ink) 0,
+          var(--ink) 0.125rem,
+          transparent 0.125rem,
+          transparent 0.25rem
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-decoration: none;
+        user-select: none;
+      }
+      .masthead nav {
+        display: none;
+        gap: 1.25rem;
+      }
+      @media (min-width: 52rem) {
+        .masthead nav {
+          display: flex;
+        }
+      }
+      .masthead nav a {
+        color: var(--ink);
+        font-size: 0.875rem;
+        padding: 0 0.25rem;
+        line-height: 3rem;
+      }
+      .masthead nav a:hover {
+        color: var(--blue);
+        text-decoration: none;
+      }
+      .masthead .spacer {
+        flex: 1;
+      }
+      .masthead .actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .icon-btn {
+        display: grid;
+        place-items: center;
+        width: 3rem;
+        height: 3rem;
+        margin: 0 -0.25rem;
+        background: none;
+        border: 0;
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .icon-btn:hover {
+        background: var(--layer);
+      }
+
+      /* ── Leadspace (hero) ─────────────────────────────────────────────────────── */
+      .lead {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        /* padding-block only — leave the horizontal padding to .wrap so the hero stays
+           aligned with the rest of the page (a shorthand here would zero it out). */
+        padding-block: 3rem 4rem;
+      }
+      @media (min-width: 66rem) {
+        .lead {
+          grid-template-columns: 1.1fr 0.9fr;
+          align-items: center;
+          padding-block: 4rem 5rem;
+        }
+      }
+      .eyebrow {
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--ink-70);
+        margin: 0 0 1rem;
+      }
+      .lead h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: clamp(2.5rem, 6vw, 4.25rem);
+        line-height: 1.02;
+        letter-spacing: -0.01em;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lead p.body {
+        max-width: 34rem;
+        margin: 1.5rem 0 2rem;
+        font-size: 1.25rem;
+        color: var(--ink-70);
+        line-height: 1.45;
+      }
+      .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      /* Abstract gradient render, standing in for IBM's signature 3D imagery. */
+      .render {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        max-height: 28.75rem;
+      }
+
+      /* ── Section: card group ──────────────────────────────────────────────────── */
+      .section {
+        padding: 4rem 0;
+        border-top: 0.0625rem solid var(--line);
+      }
+      .section.alt {
+        background: var(--layer);
+      }
+      .intro {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+      @media (min-width: 66rem) {
+        .intro {
+          grid-template-columns: 1fr 1fr;
+          gap: 4rem;
+        }
+      }
+      .intro h2 {
+        margin: 0;
+        font-weight: 400;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+      }
+      .intro p {
+        margin: 0;
+        font-size: 1.25rem;
+        color: var(--ink-70);
+        line-height: 1.45;
+        align-self: center;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.0625rem;
+        background: var(--line); /* the gaps read as hairlines, very IBM.com */
+      }
+      @media (min-width: 42rem) {
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (min-width: 66rem) {
+        .cards {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .card {
+        display: flex;
+        flex-direction: column;
+        min-height: 20rem;
+        padding: 1.5rem;
+        background: #fff;
+        color: var(--ink);
+        text-decoration: none;
+        transition: background 0.11s;
+      }
+      .card:hover {
+        background: var(--layer);
+        text-decoration: none;
+      }
+      .card h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+      .card .desc {
+        margin: 0.5rem 0 0;
+        color: var(--ink-70);
+        font-size: 0.95rem;
+      }
+      .card .foot {
+        margin-top: auto;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .card .pictogram {
+        color: var(--ink);
+      }
+      .card .arrow {
+        color: var(--blue);
+      }
+
+      /* ── Footer ───────────────────────────────────────────────────────────────── */
+      footer {
+        background: #fff;
+        border-top: 0.0625rem solid var(--line);
+        padding: 3rem 0 0;
+      }
+      .footer-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding-bottom: 3rem;
+      }
+      @media (min-width: 52rem) {
+        .footer-cols {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .footer-cols h4 {
+        margin: 0 0 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+      .footer-cols ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .footer-cols a {
+        color: var(--ink-70);
+        font-size: 0.875rem;
+      }
+      .legal {
+        border-top: 0.0625rem solid var(--line);
+        padding: 1.25rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem 1.5rem;
+      }
+      .legal .ibm-logo {
+        font-size: 1.1rem;
+      }
+      .legal span,
+      .legal a {
+        font-size: 0.75rem;
+        color: var(--ink-60);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ── Masthead ─────────────────────────────────────────────────────────────── -->
+    <header class="masthead">
+      <div class="masthead-inner wrap">
+        <a class="ibm-logo" href="index.html" aria-label="IBM — back to the app">IBM</a>
+        <nav>
+          <a href="#stack">Software</a>
+          <a href="#stack">Infrastructure</a>
+          <a href="#stack">Consulting</a>
+          <a href="#stack">Support</a>
+          <a href="#stack">Think</a>
+        </nav>
+        <span class="spacer"></span>
+        <div class="actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M29 27.6l-6.3-6.3a10 10 0 10-1.4 1.4l6.3 6.3zM6 14a8 8 0 118 8 8 8 0 01-8-8z"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 4a5 5 0 105 5 5 5 0 00-5-5zm0 8a3 3 0 113-3 3 3 0 01-3 3zM26 28h-2v-3a3 3 0 00-3-3h-10a3 3 0 00-3 3v3H6v-3a5 5 0 015-5h10a5 5 0 015 5z"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Leadspace ────────────────────────────────────────────────────────────── -->
+    <section class="wrap lead">
+      <div>
+        <p class="eyebrow">IBM Granite · Carbon Design System</p>
+        <h1>Run Granite anywhere — browser, local, or cloud.</h1>
+        <p class="body">
+          The same open IBM Granite 4 family powers in-browser WebGPU, a local Ollama, and
+          watsonx.ai — all behind one Carbon Design System interface.
+        </p>
+        <div class="ctas">
+          <cds-button href="#stack">
+            Explore the stack
+            <svg slot="icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1L6.6 2.4 11.2 7H1v2h10.2l-4.6 4.6L8 15l7-7z"/></svg>
+          </cds-button>
+          <cds-button kind="tertiary" href="https://github.com">
+            View on GitHub
+            <svg slot="icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1L6.6 2.4 11.2 7H1v2h10.2l-4.6 4.6L8 15l7-7z"/></svg>
+          </cds-button>
+        </div>
+      </div>
+
+      <!-- Abstract gradient render (stands in for IBM's 3D hero imagery). -->
+      <svg class="render" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0f62fe" />
+            <stop offset="0.55" stop-color="#8a3ffc" />
+            <stop offset="1" stop-color="#ee5396" />
+          </linearGradient>
+        </defs>
+        <rect width="460" height="460" fill="#f4f4f4" />
+        <circle cx="230" cy="230" r="150" fill="none" stroke="url(#g)" stroke-width="44" stroke-linecap="round" stroke-dasharray="540 1000" transform="rotate(-30 230 230)" />
+        <circle cx="230" cy="230" r="96" fill="none" stroke="url(#g)" stroke-width="30" stroke-linecap="round" stroke-dasharray="320 1000" transform="rotate(120 230 230)" opacity="0.85" />
+        <circle cx="230" cy="230" r="44" fill="url(#g)" opacity="0.9" />
+      </svg>
+    </section>
+
+    <!-- ── Card group ───────────────────────────────────────────────────────────── -->
+    <section class="section alt" id="stack">
+      <div class="wrap">
+        <div class="intro">
+          <h2>The whole stack, one design language</h2>
+          <p>
+            Open models, an enterprise component library, declarative LLM programs, and a path to
+            production inference — composed into a single Carbon experience.
+          </p>
+        </div>
+
+        <div class="cards">
+          <a class="card" href="#">
+            <h3>IBM Granite 4</h3>
+            <p class="desc">Open, efficient models — from a 350M Nano in the browser to H-Small on watsonx.</p>
+            <div class="foot">
+              <svg class="pictogram" width="48" height="48" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="9" y="9" width="14" height="14"/><path d="M12 6V3M16 6V3M20 6V3M12 29v-3M16 29v-3M20 29v-3M6 12H3M6 16H3M6 20H3M29 12h-3M29 16h-3M29 20h-3"/></svg>
+              <svg class="arrow" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L6.6 2.4 11.2 7H1v2h10.2l-4.6 4.6L8 15l7-7z"/></svg>
+            </div>
+          </a>
+
+          <a class="card" href="#">
+            <h3>Carbon Design System</h3>
+            <p class="desc">IBM's open-source design system — React, Web Components, and charts.</p>
+            <div class="foot">
+              <svg class="pictogram" width="48" height="48" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="16" r="12"/><path d="M16 4v24M4 16h24"/></svg>
+              <svg class="arrow" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L6.6 2.4 11.2 7H1v2h10.2l-4.6 4.6L8 15l7-7z"/></svg>
+            </div>
+          </a>
+
+          <a class="card" href="#">
+            <h3>DSPy</h3>
+            <p class="desc">Declarative LLM programs — signatures and modules instead of brittle prompts.</p>
+            <div class="foot">
+              <svg class="pictogram" width="48" height="48" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16l12-7M10 16l12 7"/></svg>
+              <svg class="arrow" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L6.6 2.4 11.2 7H1v2h10.2l-4.6 4.6L8 15l7-7z"/></svg>
+            </div>
+          </a>
+
+          <a class="card" href="#">
+            <h3>watsonx.ai</h3>
+            <p class="desc">Enterprise inference and governance for Granite and other foundation models.</p>
+            <div class="foot">
+              <svg class="pictogram" width="48" height="48" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 22a6 6 0 010-12 8 8 0 0115-2 5 5 0 01-1 14z"/></svg>
+              <svg class="arrow" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L6.6 2.4 11.2 7H1v2h10.2l-4.6 4.6L8 15l7-7z"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Footer ───────────────────────────────────────────────────────────────── -->
+    <footer>
+      <div class="wrap">
+        <div class="footer-cols">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Granite models</a></li>
+              <li><a href="#">watsonx.ai</a></li>
+              <li><a href="#">Carbon</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Build</h4>
+            <ul>
+              <li><a href="#">React frontend</a></li>
+              <li><a href="#">Web Components</a></li>
+              <li><a href="#">FastAPI backend</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Learn</h4>
+            <ul>
+              <li><a href="#">Workshop ladder</a></li>
+              <li><a href="#">DSPy</a></li>
+              <li><a href="#">A2A protocol</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>About</h4>
+            <ul>
+              <li><a href="#">This template</a></li>
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="legal">
+          <span class="ibm-logo" aria-label="IBM">IBM</span>
+          <span>© 2026 — demo page, not affiliated with IBM.</span>
+          <span class="spacer" style="flex: 1"></span>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
