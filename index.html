@@ -71,207 +71,23 @@
       </cds-side-nav-items>
     </cds-side-nav>
 
+    <!-- One component per page (components/*.js). Each renders its own markup + behaviour; this
+         file is just the shell. app.js shows/hides them on nav and drives the rail toggle. -->
     <main id="main">
-      <!-- ── Dashboard view ─────────────────────────────────────────────── -->
-      <section id="view-dashboard" class="view">
-        <header class="page-head">
-          <h1>Dashboard</h1>
-          <cds-tag type="blue" size="sm">Static JSON · no backend</cds-tag>
-        </header>
-        <p class="sub">Carbon Charts rendered from <code>data/metrics.json</code> — no server involved.</p>
+      <bob-dashboard id="view-dashboard" class="view"></bob-dashboard>
 
-        <div class="kpis">
-          <cds-tile><div class="kpi-label">Total requests</div><div class="kpi-value">926</div></cds-tile>
-          <cds-tile><div class="kpi-label">Providers</div><div class="kpi-value">3</div></cds-tile>
-          <cds-tile><div class="kpi-label">Median tok/s</div><div class="kpi-value">80</div></cds-tile>
-          <cds-tile><div class="kpi-label">Browser share</div><div class="kpi-value">44.5%</div></cds-tile>
-        </div>
+      <bob-notes id="view-data" class="view" hidden></bob-notes>
 
-        <div class="grid">
-          <cds-tile class="col-full"><div id="chart-line" class="chart"></div></cds-tile>
-          <cds-tile><div id="chart-donut" class="chart"></div></cds-tile>
-          <cds-tile><div id="chart-bar" class="chart"></div></cds-tile>
-        </div>
-      </section>
+      <bob-chat id="view-chat" class="view" hidden></bob-chat>
 
-      <!-- ── Notes data view ───────────────────────────────────────────── -->
-      <section id="view-data" class="view" hidden>
-        <header class="page-head">
-          <h1>Notes data</h1>
-          <cds-tag type="blue" size="sm">Static JSON · no backend</cds-tag>
-        </header>
-        <p class="sub">A Carbon data table built from <code>data/notes.json</code>.</p>
-
-        <cds-tile>
-          <cds-table>
-            <cds-table-head>
-              <cds-table-header-row>
-                <cds-table-header-cell>Title</cds-table-header-cell>
-                <cds-table-header-cell>Sentiment</cds-table-header-cell>
-                <cds-table-header-cell>Tags</cds-table-header-cell>
-              </cds-table-header-row>
-            </cds-table-head>
-            <cds-table-body id="notes-body"></cds-table-body>
-          </cds-table>
-        </cds-tile>
-      </section>
-
-      <!-- ── In-browser WebGPU chat view ───────────────────────────────── -->
-      <section id="view-chat" class="view" hidden>
-        <header class="page-head">
-          <h1>In-browser chat</h1>
-          <cds-tag type="blue" size="sm">WebGPU · no backend</cds-tag>
-        </header>
-        <p class="sub">
-          IBM Granite 4.0 Nano runs in your browser via transformers.js (loaded from
-          <code>esm.sh</code>). Nothing leaves this device.
-        </p>
-
-        <cds-tile>
-          <div id="chat-intro">
-            <p>
-              Run Granite 4.0 (350M) <strong>entirely in your browser</strong> via WebGPU — no
-              backend, no API key. The model (~0.4&nbsp;GB) downloads once and is cached.
-            </p>
-            <cds-button id="chat-load">Load model</cds-button>
-          </div>
-
-          <div id="chat-loading" hidden>
-            <cds-progress-bar
-              id="chat-progress"
-              label-text="Loading Granite 4.0 (350M)"
-              helper-text="Downloading & initializing…"
-              value="0"
-              max="100"
-            ></cds-progress-bar>
-          </div>
-
-          <div id="chat-messages" class="chat-messages"></div>
-
-          <div id="chat-composer" class="chat-composer" hidden>
-            <cds-text-input id="chat-input" placeholder="Ask Granite anything…" hide-label>
-              <span slot="label-text">Message</span>
-            </cds-text-input>
-            <cds-button id="chat-send" disabled>Send</cds-button>
-          </div>
-        </cds-tile>
-      </section>
-
-      <!-- ── Tutorial view ─────────────────────────────────────────────── -->
-      <section id="view-tutorial" class="view" hidden>
-        <header class="page-head">
-          <h1>Build a marketing dashboard</h1>
-          <cds-tag type="purple" size="sm">Tutorial</cds-tag>
-        </header>
-        <p class="sub">
-          No coding required. You'll <strong>describe</strong> what you want and let an AI
-          assistant build it — step by step. Two short documents set it up; then you work
-          through the prompts below.
-        </p>
-
-        <div class="tutorial-start">
-          <cds-tile>
-            <p class="start-num">Start here · 1</p>
-            <h3 class="step-title">Read the plan</h3>
-            <p class="step-desc">
-              The plan describes this dashboard as a <strong>user journey</strong>, in plain
-              language — it's how you tell an AI (or a developer) what to build, no code needed.
-            </p>
-            <a class="doc-link" href="doc.html?doc=marketing-dashboard-plan.md" target="_blank" rel="noopener">
-              Read the plan →
-            </a>
-          </cds-tile>
-          <cds-tile>
-            <p class="start-num">Start here · 2</p>
-            <h3 class="step-title">Point your AI at this folder</h3>
-            <p class="step-desc">
-              Open this folder in your AI coding assistant. It reads <strong>AGENTS.md</strong>,
-              which tells it this is a Carbon Web Components project that runs as plain HTML —
-              no install, no build.
-            </p>
-            <a class="doc-link" href="doc.html?doc=AGENTS.md" target="_blank" rel="noopener">Read AGENTS.md →</a>
-            <a class="doc-link" href="doc.html?doc=carbon-reference.md" target="_blank" rel="noopener">Carbon reference →</a>
-          </cds-tile>
-        </div>
-
-        <h2 class="steps-heading">Then build it, prompt by prompt</h2>
-        <ol class="steps">
-          <li class="step">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <h3 class="step-title">Scaffold the Carbon shell</h3>
-              <p class="step-desc">
-                Start with a UI Shell: a dark header, a side navigation, and a content area on
-                the Gray 10 theme (gray-10 page, white <code>layer-01</code> cards).
-              </p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Create a single-page app shell using Carbon Web Components loaded from the CDN. Include a dark header titled "Marketing Dashboard", a left side navigation, and a content area. Use the Carbon Gray 10 theme: a gray-10 (#f4f4f4) page background with white (layer-01) cards, and IBM Plex Sans.</cds-code-snippet>
-            </div>
-          </li>
-
-          <li class="step">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <h3 class="step-title">Add the KPI row</h3>
-              <p class="step-desc">Four summary tiles across the top, each a label plus a large light-weight number.</p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Add a row of four KPI tiles (cds-tile) at the top of the dashboard: Visitors (48.2K), Conversion rate (3.4%), Revenue ($82K), and Bounce rate (41%). Each tile shows a small gray label and a large 2.5rem light-weight number. Lay them out in a 4-column grid with 1rem gaps.</cds-code-snippet>
-            </div>
-          </li>
-
-          <li class="step">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <h3 class="step-title">Add the traffic line chart</h3>
-              <p class="step-desc">A full-width trend of daily visitors split by channel, using Carbon Charts.</p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Add a full-width Carbon Charts line chart titled "Visitors by channel" showing daily visitors over the last 7 days for three groups: Organic, Paid, and Social. Use options theme "white" and height "20rem", with the bottom axis mapped to the day (scaleType labels) and the left axis to value.</cds-code-snippet>
-            </div>
-          </li>
-
-          <li class="step">
-            <div class="step-num">4</div>
-            <div class="step-body">
-              <h3 class="step-title">Add the traffic-source donut</h3>
-              <p class="step-desc">A donut breaking down where sessions come from, with a center total.</p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Add a Carbon Charts donut chart titled "Sessions by source" with Organic 46%, Direct 24%, Paid 18%, and Social 12%. Show a center label with the total sessions. Place it as a half-width card next to the campaign chart.</cds-code-snippet>
-            </div>
-          </li>
-
-          <li class="step">
-            <div class="step-num">5</div>
-            <div class="step-body">
-              <h3 class="step-title">Add the campaign bar chart</h3>
-              <p class="step-desc">A horizontal bar chart comparing conversions per campaign.</p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Add a horizontal Carbon Charts simple bar chart titled "Conversions by campaign" comparing four campaigns: Spring Sale, Newsletter, Retargeting, and Webinar. Map the left axis to the campaign name (scaleType labels) and the bottom axis to conversions.</cds-code-snippet>
-            </div>
-          </li>
-
-          <li class="step">
-            <div class="step-num">6</div>
-            <div class="step-body">
-              <h3 class="step-title">Load data from JSON — no backend</h3>
-              <p class="step-desc">Move every chart's data into static JSON and fetch it in the browser.</p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Move all KPI and chart data into static JSON files under /data and load them with fetch() in a plain ES module. The dashboard must run with no backend and no build step — just static files served over HTTP.</cds-code-snippet>
-            </div>
-          </li>
-
-          <li class="step">
-            <div class="step-num">7</div>
-            <div class="step-body">
-              <h3 class="step-title">Polish with Carbon tokens</h3>
-              <p class="step-desc">Apply Carbon's spacing, type, and layering so it reads as a real Carbon product.</p>
-              <p class="prompt-label">Prompt to use</p>
-              <cds-code-snippet type="multi">Apply Carbon design tokens throughout: spacing-05 (16px) tile padding and grid gaps, the heading-05 type (2rem / weight 400) for the page title, body-02 for descriptions, and proper layering — a gray-10 page with white layer-01 cards. Use rem units, not px.</cds-code-snippet>
-            </div>
-          </li>
-        </ol>
-      </section>
+      <bob-tutorial id="view-tutorial" class="view" hidden></bob-tutorial>
     </main>
 
+    <!-- One module per page; each self-registers its <bob-*> element. app.js is just the shell. -->
+    <script type="module" src="./components/dashboard.js"></script>
+    <script type="module" src="./components/chat.js"></script>
+    <script type="module" src="./components/notes.js"></script>
+    <script type="module" src="./components/tutorial.js"></script>
     <script type="module" src="./app.js"></script>
   </body>
 </html>

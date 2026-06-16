@@ -35,10 +35,16 @@ point Pages at the repo root.
 
 ```
 .
-├── index.html          UI shell with 4 views: Dashboard, Chat (WebGPU), Notes data, Tutorial
+├── index.html          the shell only: dark header + rail side nav + one <bob-*> tag per page
+├── components/         one custom element per page (small, self-contained)
+│   ├── dashboard.js    <bob-dashboard> — KPI row + 3 Carbon Charts
+│   ├── chat.js         <bob-chat>      — the WebGPU Granite chat
+│   ├── notes.js        <bob-notes>     — the Carbon data table
+│   ├── tutorial.js     <bob-tutorial>  — the build-it walkthrough + prompts
+│   └── kpi-tile.js     <bob-kpi-tile>  — shared KPI tile sub-component
+├── app.js              shell controller only: nav view-switching + the hamburger rail toggle
 ├── doc.html            Carbon-styled viewer that renders the Markdown docs in-browser
 ├── ibm-landing.html    a standalone IBM.com-style marketing page (masthead, leadspace, cards, footer)
-├── app.js              vanilla module: nav/hamburger, charts + table, the WebGPU chat, tutorial wrap
 ├── chat-worker.js      module worker — Granite 4.0 (350M) on WebGPU via transformers.js (esm.sh)
 ├── styles.css          layout offsets + the g100 tokens that make the header/side nav dark
 ├── data/
@@ -85,9 +91,12 @@ The **Tutorial** page renders all three (via `doc.html`) and walks through the b
 - **Dark header:** Carbon components read `--cds-*` design tokens (defaulting to the light theme).
   `styles.css` sets the g100 token values on `cds-header` so it renders dark — the standard Carbon
   pairing of a dark header over a white side nav.
+- **Pages:** each page is a custom element in `components/<name>.js` (e.g. `<bob-dashboard>`) that
+  renders itself into the light DOM. `index.html` just holds the empty tags; `app.js` shows/hides
+  them on nav. Small, self-contained files — no framework, no build.
 - **Charts:** the `importmap` maps the bare specifier `@carbon/charts` to a CDN URL, so
-  `app.js` can `import { LineChart } from '@carbon/charts'` and `new LineChart(el, { data, options })`
-  with no bundler.
+  `components/dashboard.js` can `import { LineChart } from '@carbon/charts'` and
+  `new LineChart(el, { data, options })` with no bundler.
 - **Docs:** `doc.html` fetches a Markdown file and renders it with `marked` (from `esm.sh`),
   styled with Carbon tokens — same no-build pattern as the charts.
 

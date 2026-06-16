@@ -27,6 +27,12 @@ body {
   display: none !important;
 }
 
+/* Each page is a custom element (<bob-dashboard> etc.); custom elements are inline by default, so
+   make the visible view a block. */
+.view {
+  display: block;
+}
+
 /* The Carbon UI Shell header AND side nav are dark (g100), matching the React app. The
    components read these token custom properties (which default to the light theme when
    undefined), so set the g100 values on the hosts — they inherit into the shadow DOM. */
