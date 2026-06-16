@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard · Bob Builder Template</title>
+    <link rel="icon" href="data:," />
+
+    <!-- IBM Plex + Carbon Charts styles (CDN). styles.css is local. -->
+    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/plex/sans.css" />
+    <link rel="stylesheet" href="https://esm.sh/@carbon/charts@1.27.11/styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Carbon Web Components — self-registering ES modules from the IBM CDN (CORS-enabled, so
+         they load even from file://). -->
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/ui-shell.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tag.min.js"></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tile.min.js"></script>
+  </head>
+  <body>
+    <main id="main">
+      <bob-dashboard class="view"></bob-dashboard>
+    </main>
+
+    <!-- Shared shell (header + rail), then this page's data + components. All classic scripts, so
+         the page opens straight from the filesystem (file://) — no server, no build. -->
+    <script src="./shell.js"></script>
+    <script src="./data/metrics.js"></script>
+    <script src="./components/kpi-tile.js"></script>
+    <script src="./components/dashboard.js"></script>
+  </body>
+</html>

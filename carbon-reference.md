@@ -125,11 +125,11 @@ Pick the bundle from the tables below; the `<name>` column **is** the end of the
 
 ### Carbon Charts (not a `<cds-*>` script)
 
-Charts are **not** loaded the same way. They come through the **import map** in `index.html`
-and are used as classes in `app.js`:
+Charts are **not** loaded the same way. They're pulled in with a **dynamic `import()`** of the CDN
+module (works from a classic script, and from `file://`):
 
 ```js
-import { LineChart, DonutChart, SimpleBarChart } from '@carbon/charts';
+const { LineChart, DonutChart, SimpleBarChart } = await import('https://esm.sh/@carbon/charts@1.27.11');
 new LineChart(element, { data, options }); // options: { theme: 'white', height: '20rem' }
 ```
 
@@ -217,7 +217,7 @@ Interactive elements are **blue-60**; don't invent accent colors.
 - ❌ Drop shadows for elevation → ✅ background layer steps.
 - ❌ `px` values / off-scale spacing (e.g. `13px`, `1.3rem`) → ✅ the rem spacing scale.
 - ❌ A primary-blue chat/message bubble that looks like a button → ✅ a blue-**20** tint.
-- ❌ `npm install` anything → ✅ CDN scripts + import map only (see [`AGENTS.md`](AGENTS.md)).
+- ❌ `npm install` anything → ✅ CDN scripts + dynamic `import()` only (see [`AGENTS.md`](AGENTS.md)).
 
 ---
 

@@ -22,7 +22,7 @@ body {
   color: #161616; /* Carbon gray-100 */
 }
 
-/* The `hidden` attribute must win over our `display: flex` rules (chat intro/composer). */
+/* The `hidden` attribute always wins over any display rule. */
 [hidden] {
   display: none !important;
 }
@@ -186,59 +186,6 @@ cds-tile {
 /* Stack tags with a little breathing room inside table cells. */
 cds-table-cell cds-tag {
   margin: 0.125rem 0.125rem 0.125rem 0;
-}
-
-/* ── In-browser chat ─────────────────────────────────────────────────────────── */
-#chat-intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-}
-#chat-intro p {
-  margin: 0;
-  color: #525252; /* gray-70 */
-}
-.chat-messages {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  min-height: 13.75rem;
-  margin-top: 1rem;
-}
-.chat-msg {
-  display: flex;
-  flex-direction: column;
-  max-width: 85%;
-}
-.chat-msg.user {
-  align-self: flex-end;
-  align-items: flex-end;
-}
-.chat-msg-label {
-  margin-bottom: 0.25rem;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: #6f6f6f; /* gray-60 */
-}
-.chat-bubble {
-  padding: 0.75rem 1rem;
-  white-space: pre-wrap;
-  background: #f4f4f4; /* gray-10 — one layer up from the white tile */
-}
-.chat-msg.user .chat-bubble {
-  background: #d0e2ff; /* blue-20 — a message tint, not the primary-button blue */
-  color: #161616;
-}
-.chat-composer {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-end;
-  margin-top: 1rem;
-}
-.chat-composer cds-text-input {
-  flex: 1;
 }
 
 /* ── Tutorial ────────────────────────────────────────────────────────────────── */

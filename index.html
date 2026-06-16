@@ -2,92 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="0; url=dashboard.html" />
     <title>Bob Builder Template</title>
-    <link rel="icon" href="data:," />
-
-    <!-- IBM Plex (Carbon's typeface) + Carbon Charts styles, both from CDN -->
-    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/plex/sans.css" />
-    <link rel="stylesheet" href="https://esm.sh/@carbon/charts@1.27.11/styles.css" />
-    <link rel="stylesheet" href="./styles.css" />
-
-    <!-- Carbon Web Components — each script self-registers its <cds-*> custom elements.
-         No bundler, no build step: the browser loads them straight from IBM's CDN. -->
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/ui-shell.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/button.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tag.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/data-table.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/tile.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/notification.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/text-input.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/progress-bar.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.56.0/code-snippet.min.js"></script>
-
-    <!-- Import map so app.js can import Carbon Charts with a clean bare specifier. -->
-    <script type="importmap">
-      {
-        "imports": {
-          "@carbon/charts": "https://esm.sh/@carbon/charts@1.27.11"
-        }
-      }
-    </script>
+    <link rel="canonical" href="dashboard.html" />
   </head>
-
   <body>
-    <cds-header aria-label="Bob Builder Template">
-      <cds-header-menu-button
-        button-label-active="Collapse menu"
-        button-label-inactive="Expand menu"
-      ></cds-header-menu-button>
-      <cds-header-name href="#">Bob Builder Template</cds-header-name>
-    </cds-header>
-
-    <!-- Persistent icon rail (Carbon "rail"): icons-only when collapsed, labels when the hamburger
-         expands it. Carbon manages the 3rem ↔ 16rem sizing and overlays the content; each link
-         carries a `title-icon` so the rail stays meaningful. -->
-    <cds-side-nav aria-label="Side navigation" collapse-mode="rail">
-      <cds-side-nav-items>
-        <cds-side-nav-link data-view="dashboard" active href="#dashboard">
-          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M24 21H26V26H24z"/><path d="M20 16H22V26H20z"/><path d="M11,26a5.0059,5.0059,0,0,1-5-5H8a3,3,0,1,0,3-3V16a5,5,0,0,1,0,10Z"/><path d="M28,2H4A2.002,2.002,0,0,0,2,4V28a2.0023,2.0023,0,0,0,2,2H28a2.0027,2.0027,0,0,0,2-2V4A2.0023,2.0023,0,0,0,28,2Zm0,9H14V4H28ZM12,4v7H4V4ZM4,28V13H28.0007l.0013,15Z"/></svg>
-          Dashboard
-        </cds-side-nav-link>
-        <cds-side-nav-link data-view="chat" href="#chat">
-          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M17.74,30,16,29l4-7h6a2,2,0,0,0,2-2V8a2,2,0,0,0-2-2H6A2,2,0,0,0,4,8V20a2,2,0,0,0,2,2h9v2H6a4,4,0,0,1-4-4V8A4,4,0,0,1,6,4H26a4,4,0,0,1,4,4V20a4,4,0,0,1-4,4H21.16Z"/><path d="M8 10H24V12H8z"/><path d="M8 16H18V18H8z"/></svg>
-          Chat (WebGPU)
-        </cds-side-nav-link>
-        <cds-side-nav-link data-view="data" href="#data">
-          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M29,5a2,2,0,0,0-2-2H5A2,2,0,0,0,3,5V27a2,2,0,0,0,2,2H27a2,2,0,0,0,2-2ZM27,5V9H5V5Zm0,22H5V23H27Zm0-6H5V17H27Zm0-6H5V11H27Z"/></svg>
-          Notes data
-        </cds-side-nav-link>
-        <cds-side-nav-link data-view="tutorial" href="#tutorial">
-          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M26,30H24V27a5.0059,5.0059,0,0,0-5-5H13a5.0059,5.0059,0,0,0-5,5v3H6V27a7.0082,7.0082,0,0,1,7-7h6a7.0082,7.0082,0,0,1,7,7Z"/><path d="M5,6A1,1,0,0,0,4,7v9H6V7A1,1,0,0,0,5,6Z"/><path d="M4,2V4H9v7a7,7,0,0,0,14,0V4h5V2Zm7,2H21V7H11Zm5,12a5,5,0,0,1-5-5V9H21v2A5,5,0,0,1,16,16Z"/></svg>
-          Tutorial
-        </cds-side-nav-link>
-        <!-- No data-view → this one navigates to the standalone IBM.com-style page. -->
-        <cds-side-nav-link href="ibm-landing.html">
-          <svg slot="title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/><path d="M20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2z"/></svg>
-          IBM landing
-        </cds-side-nav-link>
-      </cds-side-nav-items>
-    </cds-side-nav>
-
-    <!-- One component per page (components/*.js). Each renders its own markup + behaviour; this
-         file is just the shell. app.js shows/hides them on nav and drives the rail toggle. -->
-    <main id="main">
-      <bob-dashboard id="view-dashboard" class="view"></bob-dashboard>
-
-      <bob-notes id="view-data" class="view" hidden></bob-notes>
-
-      <bob-chat id="view-chat" class="view" hidden></bob-chat>
-
-      <bob-tutorial id="view-tutorial" class="view" hidden></bob-tutorial>
-    </main>
-
-    <!-- One module per page; each self-registers its <bob-*> element. app.js is just the shell. -->
-    <script type="module" src="./components/dashboard.js"></script>
-    <script type="module" src="./components/chat.js"></script>
-    <script type="module" src="./components/notes.js"></script>
-    <script type="module" src="./components/tutorial.js"></script>
-    <script type="module" src="./app.js"></script>
+    <p>Redirecting to <a href="dashboard.html">the dashboard</a>…</p>
   </body>
 </html>

@@ -1,6 +1,6 @@
-// <bob-notes> — a Carbon data table built from data/notes.json (no backend). Light DOM so the
-// table inherits the page's gray-10 layer tokens.
-const SENTIMENT_TYPE = { positive: 'green', negative: 'red' }
+// <bob-notes> — a Carbon data table built from the global BOB_NOTES (data/notes.js). Classic
+// script (no fetch, no import) so it works from file://. Light DOM so the table inherits tokens.
+const NOTES_SENTIMENT_TYPE = { positive: 'green', negative: 'red' }
 
 class BobNotes extends HTMLElement {
   connectedCallback() {
@@ -9,9 +9,9 @@ class BobNotes extends HTMLElement {
     this.innerHTML = `
       <header class="page-head">
         <h1>Notes data</h1>
-        <cds-tag type="blue" size="sm">Static JSON · no backend</cds-tag>
+        <cds-tag type="blue" size="sm">Static JS data · no backend</cds-tag>
       </header>
-      <p class="sub">A Carbon data table built from <code>data/notes.json</code>.</p>
+      <p class="sub">A Carbon data table built from <code>data/notes.js</code>.</p>
 
       <cds-tile>
         <cds-table>
@@ -25,17 +25,14 @@ class BobNotes extends HTMLElement {
           <cds-table-body></cds-table-body>
         </cds-table>
       </cds-tile>`
-    this.fillRows().catch((err) => console.error('notes table:', err))
+    this.fillRows()
   }
 
   async fillRows() {
-    const res = await fetch('./data/notes.json')
-    if (!res.ok) throw new Error(`notes.json: ${res.status}`)
-    const notes = await res.json()
     await customElements.whenDefined('cds-table-row')
     const body = this.querySelector('cds-table-body')
 
-    for (const note of notes) {
+    for (const note of window.BOB_NOTES || []) {
       const row = document.createElement('cds-table-row')
 
       const titleCell = document.createElement('cds-table-cell')
@@ -44,7 +41,7 @@ class BobNotes extends HTMLElement {
       const sentimentCell = document.createElement('cds-table-cell')
       if (note.sentiment) {
         const tag = document.createElement('cds-tag')
-        tag.setAttribute('type', SENTIMENT_TYPE[note.sentiment] ?? 'gray')
+        tag.setAttribute('type', NOTES_SENTIMENT_TYPE[note.sentiment] ?? 'gray')
         tag.textContent = note.sentiment
         sentimentCell.appendChild(tag)
       } else {

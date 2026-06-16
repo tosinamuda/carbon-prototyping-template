@@ -1,14 +1,16 @@
 # Carbon Prototyping Template
 
-A **no-build, no-backend** prototyping template for IBM Carbon. Open it with any static file
-server and it runs — proving you can build a real Carbon Design System UI with **zero framework,
-zero build step, and zero backend**:
+A **no-build, no-backend** prototyping template for IBM Carbon — a real Carbon Design System UI
+with **zero framework, zero build step, and zero backend**, that you can open by **double-clicking
+the HTML** (no server required):
 
+- **Multi-page**: one real HTML file per page (`dashboard.html`, `notes.html`, `tutorial.html`) — a
+  proper URL each. `index.html` redirects to the dashboard.
 - **Carbon Web Components** (`<cds-header>`, `<cds-side-nav>`, `<cds-table>`, `<cds-tile>`,
-  `<cds-tag>` …) loaded as self-registering custom elements straight from IBM's CDN — no npm, no bundler.
-- **Carbon Charts** (vanilla classes) loaded via an **import map** from a CDN.
-- **In-browser AI** — IBM Granite 4.0 (350M) running fully on WebGPU via transformers.js (no server).
-- **Data from static JSON** (`data/metrics.json`, `data/notes.json`) — fetched in the browser.
+  `<cds-tag>` …) loaded as self-registering elements straight from IBM's CDN — no npm, no bundler.
+- **Carbon Charts** loaded with a dynamic `import()` from a CDN.
+- **Data as plain JS** (`data/metrics.js`, `data/notes.js`) — JS globals, no `fetch()`, so it works
+  from `file://` too.
 
 It's also a **workshop kit**: hand the folder to an AI coding assistant and the bundled docs
 (`AGENTS.md`, `marketing-dashboard-plan.md`, `carbon-reference.md`) give it everything it needs to
@@ -16,40 +18,41 @@ build the demo with you — no install step.
 
 ## Run
 
-It's just static files, but the JSON `fetch` needs HTTP (not `file://`), so serve the folder
-with anything that serves static files:
+**Just open it.** Double-click `dashboard.html` (or open `file:///…/dashboard.html`). All our code
+is classic scripts + JS-global data, so it runs straight from the filesystem — no server, no build.
+(Needs internet, since Carbon + Charts load from their CDNs.)
+
+To deploy or share a real URL, serve the folder with anything static:
 
 ```bash
-python3 -m http.server 4321
-# …or:
-npx --yes serve -l 4321
+python3 -m http.server 4321   # → http://localhost:4321
+# …or:  npx --yes serve -l 4321
 ```
 
-Then open <http://localhost:4321>. (Needs internet on first load to fetch the Carbon CDN assets;
-they're then cached by the browser.)
-
-Because it's fully static, it also deploys to **GitHub Pages** (or any static host) with no build —
-point Pages at the repo root.
+Because it's fully static, it also deploys to **GitHub Pages** with no build — point Pages at the
+repo root. One caveat: the `doc.html` Markdown viewer *does* use `fetch()`, so the "Read the plan /
+AGENTS.md" links on the Tutorial page only render when **served** (not from `file://`).
 
 ## Files
 
 ```
 .
-├── index.html          the shell only: dark header + rail side nav + one <bob-*> tag per page
-├── components/         one custom element per page (small, self-contained)
+├── index.html          redirects to dashboard.html
+├── dashboard.html      page: KPI row + 3 Carbon Charts
+├── notes.html          page: a Carbon data table
+├── tutorial.html       page: the "build it" walkthrough + copyable prompts
+├── shell.js            injects the shared dark header + rail side nav into every page
+├── components/         one custom element per page (small, self-contained, classic scripts)
 │   ├── dashboard.js    <bob-dashboard> — KPI row + 3 Carbon Charts
-│   ├── chat.js         <bob-chat>      — the WebGPU Granite chat
 │   ├── notes.js        <bob-notes>     — the Carbon data table
 │   ├── tutorial.js     <bob-tutorial>  — the build-it walkthrough + prompts
 │   └── kpi-tile.js     <bob-kpi-tile>  — shared KPI tile sub-component
-├── app.js              shell controller only: nav view-switching + the hamburger rail toggle
-├── doc.html            Carbon-styled viewer that renders the Markdown docs in-browser
-├── ibm-landing.html    a standalone IBM.com-style marketing page (masthead, leadspace, cards, footer)
-├── chat-worker.js      module worker — Granite 4.0 (350M) on WebGPU via transformers.js (esm.sh)
-├── styles.css          layout offsets + the g100 tokens that make the header/side nav dark
 ├── data/
-│   ├── metrics.json    chart data (line / donut / bar)
-│   └── notes.json      data-table rows
+│   ├── metrics.js      chart data as a JS global (window.BOB_METRICS)
+│   └── notes.js        table rows as a JS global (window.BOB_NOTES)
+├── doc.html            Carbon-styled Markdown viewer (used by the Tutorial's doc links; needs serving)
+├── ibm-landing.html    a standalone IBM.com-style marketing page (masthead, leadspace, cards, footer)
+├── styles.css          layout offsets + the g100 tokens that make the header/rail dark
 │
 │   workshop kit (for building the demo with an AI assistant):
 ├── AGENTS.md                   project rules & conventions for an AI coding assistant
@@ -57,13 +60,11 @@ point Pages at the repo root.
 └── carbon-reference.md         Carbon cheat-sheet: component CDN URLs + design guidance
 ```
 
-`index.html` is the app shell with four nav views:
-- **Dashboard** — Carbon Charts (KPI tiles + line/donut/bar) from `data/metrics.json`.
-- **Chat (WebGPU)** — IBM Granite 4.0 (350M) running fully in the browser; `chat-worker.js`
-  imports transformers.js from `esm.sh`. No backend.
-- **Notes data** — a Carbon data table from `data/notes.json`.
-- **Tutorial** — a step-by-step "build a marketing dashboard" guide with copyable prompts
-  (`cds-code-snippet`), linking the workshop-kit docs.
+The pages (each shares the rail nav via `shell.js`):
+- **Dashboard** (`dashboard.html`) — Carbon Charts (KPI tiles + line/donut/bar) from `data/metrics.js`.
+- **Notes data** (`notes.html`) — a Carbon data table from `data/notes.js`.
+- **Tutorial** (`tutorial.html`) — a step-by-step "build a marketing dashboard" guide with copyable
+  prompts (`cds-code-snippet`), linking the workshop-kit docs.
 
 [`ibm-landing.html`](ibm-landing.html) is a separate page that recreates the **IBM.com look** — the
 striped IBM wordmark, a gradient leadspace headline, Carbon arrow buttons, an IBM-style card group, and
@@ -91,12 +92,15 @@ The **Tutorial** page renders all three (via `doc.html`) and walks through the b
 - **Dark header:** Carbon components read `--cds-*` design tokens (defaulting to the light theme).
   `styles.css` sets the g100 token values on `cds-header` so it renders dark — the standard Carbon
   pairing of a dark header over a white side nav.
-- **Pages:** each page is a custom element in `components/<name>.js` (e.g. `<bob-dashboard>`) that
-  renders itself into the light DOM. `index.html` just holds the empty tags; `app.js` shows/hides
-  them on nav. Small, self-contained files — no framework, no build.
-- **Charts:** the `importmap` maps the bare specifier `@carbon/charts` to a CDN URL, so
-  `components/dashboard.js` can `import { LineChart } from '@carbon/charts'` and
-  `new LineChart(el, { data, options })` with no bundler.
+- **Pages:** each `.html` page holds one custom element (`<bob-dashboard>` etc.) defined in
+  `components/<name>.js` (a classic script) that renders itself into the light DOM. `shell.js`
+  injects the shared header + rail nav into every page and marks the current link active. Nav links
+  are real `<a href>`s — the browser navigates; no client-side router.
+- **Charts:** `components/dashboard.js` pulls Carbon Charts in with a dynamic
+  `import('https://esm.sh/@carbon/charts@1.27.11')` — works from a classic script, and from `file://`.
+- **Runs from `file://`:** no local ES modules, no `fetch()` (data is JS globals in `data/*.js`),
+  no Web Workers — only those are blocked when you open files directly. Remote CDN modules are
+  CORS-enabled, so Carbon + Charts still load.
 - **Docs:** `doc.html` fetches a Markdown file and renders it with `marked` (from `esm.sh`),
   styled with Carbon tokens — same no-build pattern as the charts.
 
