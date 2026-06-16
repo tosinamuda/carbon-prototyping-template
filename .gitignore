@@ -3,6 +3,7 @@
 
 # Editor / tooling
 .claude/
+CLAUDE.md
 *.log
 
 # Optional local static-server helpers
